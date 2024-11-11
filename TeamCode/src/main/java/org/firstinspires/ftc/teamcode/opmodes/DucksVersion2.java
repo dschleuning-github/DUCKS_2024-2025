@@ -1,35 +1,78 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+/*   MIT License
+ *   Copyright (c) [2024] [Base 10 Assets, LLC]
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
 
-/*import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
+ *   The above copyright notice and this permission notice shall be included in all
+ *   copies or substantial portions of the Software.
+
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *   SOFTWARE.
  */
-//package org.firstinspires.ftc.teamcode.opmodes;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-//import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.mechanisms.DucksProgrammingBoard1_4;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
+/*
+ * This OpMode is an example driver-controlled (TeleOp) mode for the goBILDA 2024-2025 FTC
+ * Into The Deep Starter Robot
+ * The code is structured as a LinearOpMode
+ *
+ * This robot has a two-motor differential-steered (sometimes called tank or skid steer) drivetrain.
+ * With a left and right drive motor.
+ * The drive on this robot is controlled in an "Arcade" style, with the left stick Y axis
+ * controlling the forward movement and the right stick X axis controlling rotation.
+ * This allows easy transition to a standard "First Person" control of a
+ * mecanum or omnidirectional chassis.
+ *
+ * The drive wheels are 96mm diameter traction (Rhino) or omni wheels.
+ * They are driven by 2x 5203-2402-0019 312RPM Yellow Jacket Planetary Gearmotors.
+ *
+ * This robot's main scoring mechanism includes an arm powered by a motor, a "wrist" driven
+ * by a servo, and an intake driven by a continuous rotation servo.
+ *
+ * The arm is powered by a 5203-2402-0051 (50.9:1 Yellow Jacket Planetary Gearmotor) with an
+ * external 5:1 reduction. This creates a total ~254.47:1 reduction.
+ * This OpMode uses the motor's encoder and the RunToPosition method to drive the arm to
+ * specific setpoints. These are defined as a number of degrees of rotation away from the arm's
+ * starting position.
+ *
+ * Make super sure that the arm is reset into the robot, and the wrist is folded in before
+ * you run start the OpMode. The motor's encoder is "relative" and will move the number of degrees
+ * you request it to based on the starting position. So if it starts too high, all the motor
+ * setpoints will be wrong.
+ *
+ * The wrist is powered by a goBILDA Torque Servo (2000-0025-0002).
+ *
+ * The intake wheels are powered by a goBILDA Speed Servo (2000-0025-0003) in Continuous Rotation mode.
+ */
+
 
 @TeleOp
-public class DucksVersion1_5 extends OpMode{
-    DucksProgrammingBoard1_4 board = new DucksProgrammingBoard1_4();
-    double gear = 1.0;
-    double armconstant = 360 * 30/125 * 30/125 ;
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
+//@Disabled
+public class DucksVersion2 extends LinearOpMode {
 
     /* Declare OpMode members. */
+    //public DcMotor  leftDrive   = null; //the left drivetrain motor
+    //public DcMotor  rightDrive  = null; //the right drivetrain motor
     public DcMotor  armMotor    = null; //the arm motor
     public CRServo  intake      = null; //the active intake servo
     public Servo    wrist       = null; //the wrist servo
@@ -85,16 +128,37 @@ public class DucksVersion1_5 extends OpMode{
     /* Variables that are used to set the arm to a specific position */
     double armPosition = (int)ARM_COLLAPSED_INTO_ROBOT;
     double armPositionFudgeFactor;
+
+
     @Override
-    public void init() {
-        board.init(hardwareMap);
-        //initialArmRotation = board.getArmMotorRotations();
-        // /* Define and Initialize Motors */
-        armMotor   = hardwareMap.get(DcMotor.class, "armMotor"); //the arm motor
+    public void runOpMode() {
+        /*
+        These variables are private to the OpMode, and are used to control the drivetrain.
+         */
+        //double left;
+        //double right;
+        //double forward;
+        //double rotate;
+        //double max;
+
+
+        /* Define and Initialize Motors */
+        //leftDrive  = hardwareMap.get(DcMotor.class, "left_front_drive"); //the left drivetrain motor
+        //rightDrive = hardwareMap.get(DcMotor.class, "right_front_drive"); //the right drivetrain motor
+        armMotor   = hardwareMap.get(DcMotor.class, "left_arm"); //the arm motor
+
+
+        /* Most skid-steer/differential drive robots require reversing one motor to drive forward.
+        for this robot, we reverse the right motor.*/
+        //leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
+
 
         /* Setting zeroPowerBehavior to BRAKE enables a "brake mode". This causes the motor to slow down
         much faster when it is coasting. This creates a much more controllable drivetrain. As the robot
         stops much quicker. */
+        //leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         /*This sets the maximum current that the control hub will apply to the arm before throwing a flag */
@@ -108,6 +172,7 @@ public class DucksVersion1_5 extends OpMode{
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+
         /* Define and initialize servos.*/
         intake = hardwareMap.get(CRServo.class, "intake");
         wrist  = hardwareMap.get(Servo.class, "wrist");
@@ -119,11 +184,45 @@ public class DucksVersion1_5 extends OpMode{
         /* Send telemetry message to signify robot waiting */
         telemetry.addLine("Robot Ready.");
         telemetry.update();
-    }
-    @Override
-    public void loop() {
 
-        /* Here we handle the three buttons that have direct control of the intake speed.
+        /* Wait for the game driver to press play */
+        waitForStart();
+
+        /* Run until the driver presses stop */
+        while (opModeIsActive()) {
+
+            /* Set the drive and turn variables to follow the joysticks on the gamepad.
+            the joysticks decrease as you push them up. So reverse the Y axis. */
+            //forward = -gamepad1.left_stick_y;
+            //rotate  = gamepad1.right_stick_x;
+
+
+            /* Here we "mix" the input channels together to find the power to apply to each motor.
+            The both motors need to be set to a mix of how much you're retesting the robot move
+            forward, and how much you're requesting the robot turn. When you ask the robot to rotate
+            the right and left motors need to move in opposite directions. So we will add rotate to
+            forward for the left motor, and subtract rotate from forward for the right motor. */
+
+            //left  = forward + rotate;
+            //right = forward - rotate;
+
+            /* Normalize the values so neither exceed +/- 1.0 */
+            //max = Math.max(Math.abs(left), Math.abs(right));
+            /*if (max > 1.0)
+            {
+                left /= max;
+                right /= max;
+            }
+
+             */
+
+            /* Set the motor power to the variables we've mixed and normalized */
+            //leftDrive.setPower(left);
+            //rightDrive.setPower(right);
+
+
+
+            /* Here we handle the three buttons that have direct control of the intake speed.
             These control the continuous rotation servo that pulls elements into the robot,
             If the user presses A, it sets the intake power to the final variable that
             holds the speed we want to collect at.
@@ -137,15 +236,15 @@ public class DucksVersion1_5 extends OpMode{
             three if statements, then it will set the intake servo's power to multiple speeds in
             one cycle. Which can cause strange behavior. */
 
-        if (gamepad2.a) {
-            intake.setPower(INTAKE_COLLECT);
-        }
-        else if (gamepad2.x) {
-            intake.setPower(INTAKE_OFF);
-        }
-        else if (gamepad2.b) {
-            intake.setPower(INTAKE_DEPOSIT);
-        }
+            if (gamepad1.a) {
+                intake.setPower(INTAKE_COLLECT);
+            }
+            else if (gamepad1.x) {
+                intake.setPower(INTAKE_OFF);
+            }
+            else if (gamepad1.b) {
+                intake.setPower(INTAKE_DEPOSIT);
+            }
 
 
 
@@ -156,53 +255,53 @@ public class DucksVersion1_5 extends OpMode{
             it folds out the wrist to make sure it is in the correct orientation to intake, and it
             turns the intake on to the COLLECT mode.*/
 
-        if(gamepad2.right_bumper){
-            /* This is the intaking/collecting arm position */
-            armPosition = ARM_COLLECT;
-            wrist.setPosition(WRIST_FOLDED_OUT);
-            intake.setPower(INTAKE_COLLECT);
-        }
+            if(gamepad1.right_bumper){
+                /* This is the intaking/collecting arm position */
+                armPosition = ARM_COLLECT;
+                wrist.setPosition(WRIST_FOLDED_OUT);
+                intake.setPower(INTAKE_COLLECT);
+            }
 
-        else if (gamepad2.left_bumper){
+            else if (gamepad1.left_bumper){
                     /* This is about 20° up from the collecting position to clear the barrier
                     Note here that we don't set the wrist position or the intake power when we
                     select this "mode", this means that the intake and wrist will continue what
                     they were doing before we clicked left bumper. */
-            armPosition = ARM_CLEAR_BARRIER;
-        }
+                armPosition = ARM_CLEAR_BARRIER;
+            }
 
-        else if (gamepad2.y){
-            /* This is the correct height to score the sample in the LOW BASKET */
-            armPosition = ARM_SCORE_SAMPLE_IN_LOW;
-        }
+            else if (gamepad1.y){
+                /* This is the correct height to score the sample in the LOW BASKET */
+                armPosition = ARM_SCORE_SAMPLE_IN_LOW;
+            }
 
-        else if (gamepad2.dpad_left) {
+            else if (gamepad1.dpad_left) {
                     /* This turns off the intake, folds in the wrist, and moves the arm
                     back to folded inside the robot. This is also the starting configuration */
-            armPosition = ARM_COLLAPSED_INTO_ROBOT;
-            intake.setPower(INTAKE_OFF);
-            wrist.setPosition(WRIST_FOLDED_IN);
-        }
+                armPosition = ARM_COLLAPSED_INTO_ROBOT;
+                intake.setPower(INTAKE_OFF);
+                wrist.setPosition(WRIST_FOLDED_IN);
+            }
 
-        else if (gamepad2.dpad_right){
-            /* This is the correct height to score SPECIMEN on the HIGH CHAMBER */
-            armPosition = ARM_SCORE_SPECIMEN;
-            wrist.setPosition(WRIST_FOLDED_IN);
-        }
+            else if (gamepad1.dpad_right){
+                /* This is the correct height to score SPECIMEN on the HIGH CHAMBER */
+                armPosition = ARM_SCORE_SPECIMEN;
+                wrist.setPosition(WRIST_FOLDED_IN);
+            }
 
-        else if (gamepad2.dpad_up){
-            /* This sets the arm to vertical to hook onto the LOW RUNG for hanging */
-            armPosition = ARM_ATTACH_HANGING_HOOK;
-            intake.setPower(INTAKE_OFF);
-            wrist.setPosition(WRIST_FOLDED_IN);
-        }
+            else if (gamepad1.dpad_up){
+                /* This sets the arm to vertical to hook onto the LOW RUNG for hanging */
+                armPosition = ARM_ATTACH_HANGING_HOOK;
+                intake.setPower(INTAKE_OFF);
+                wrist.setPosition(WRIST_FOLDED_IN);
+            }
 
-        else if (gamepad2.dpad_down){
-            /* this moves the arm down to lift the robot up once it has been hooked */
-            armPosition = ARM_WINCH_ROBOT;
-            intake.setPower(INTAKE_OFF);
-            wrist.setPosition(WRIST_FOLDED_IN);
-        }
+            else if (gamepad1.dpad_down){
+                /* this moves the arm down to lift the robot up once it has been hooked */
+                armPosition = ARM_WINCH_ROBOT;
+                intake.setPower(INTAKE_OFF);
+                wrist.setPosition(WRIST_FOLDED_IN);
+            }
 
 
             /* Here we create a "fudge factor" for the arm position.
@@ -213,16 +312,16 @@ public class DucksVersion1_5 extends OpMode{
             than the other, it "wins out". This variable is then multiplied by our FUDGE_FACTOR.
             The FUDGE_FACTOR is the number of degrees that we can adjust the arm by with this function. */
 
-        armPositionFudgeFactor = FUDGE_FACTOR * (gamepad2.right_trigger + (-gamepad2.left_trigger));
+            armPositionFudgeFactor = FUDGE_FACTOR * (gamepad1.right_trigger + (-gamepad1.left_trigger));
 
 
             /* Here we set the target position of our arm to match the variable that was selected
             by the driver.
             We also set the target velocity (speed) the motor runs at, and use setMode to run it.*/
-        armMotor.setTargetPosition((int) (armPosition + armPositionFudgeFactor));
+            armMotor.setTargetPosition((int) (armPosition + armPositionFudgeFactor));
 
-        ((DcMotorEx) armMotor).setVelocity(2100);
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ((DcMotorEx) armMotor).setVelocity(2100);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             /* TECH TIP: Encoders, integers, and doubles
             Encoders report when the motor has moved a specified angle. They send out pulses which
@@ -244,147 +343,17 @@ public class DucksVersion1_5 extends OpMode{
             rounds it to the nearest whole number.
             */
 
-        /* Check to see if our arm is over the current limit, and report via telemetry. */
-        if (((DcMotorEx) armMotor).isOverCurrent()){
-            telemetry.addLine("MOTOR EXCEEDED CURRENT LIMIT!");
-        }
-
-
-        /* send telemetry to the driver of the arm's current position and target position */
-        telemetry.addData("armTarget: ", armMotor.getTargetPosition());
-        telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
-        telemetry.update();
-
-
-        double forwardSpeed = gear * -gamepad1.right_stick_y;
-        double sideSpeed = gear * gamepad1.right_stick_x;
-        double rotateSpeed = gear * gamepad1.left_stick_x;
-        //double armSpeed = -gamepad2.left_stick_y;
-        double millimeters = Math.PI * 80 * board.getMotorRotations();
-
-        //leftDrive  = hardwareMap.get(DcMotor.class, "hangingarm_1");
-        //rightDrive = hardwareMap.get(DcMotor.class, "hangingarm_2");
-
-        //leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
-
-        //double leftPower;
-        /*double rightPower;
-
-        double leftMotor = 0.87 * gamepad2.right_stick_y;
-        double rightMotor  = 1.0 * gamepad2.right_stick_y;
-        leftPower    = Range.clip(leftMotor, -1.0, 1.0) ;
-        rightPower   = Range.clip(rightMotor, -1.0, 1.0) ;
-        leftDrive.setPower(leftPower);
-        rightDrive.setPower(rightPower);
-        if (gamepad2.right_stick_y < -0.1){
-            leftDrive.setPower(0);
-            rightDrive.setPower(0);
-        }
-         */
-
-
-        if(gamepad1.right_bumper) {
-            gear += .01;
-            if (gear > 3) {
-                gear =3;
+            /* Check to see if our arm is over the current limit, and report via telemetry. */
+            if (((DcMotorEx) armMotor).isOverCurrent()){
+                telemetry.addLine("MOTOR EXCEEDED CURRENT LIMIT!");
             }
-        }
-        if(gamepad1.left_bumper){
-            gear -= .01;
-            if (gear < 0.001) {
-                gear = 0.001;
-            }
-        }
 
-        if ((Math.abs(forwardSpeed) > Math.abs(sideSpeed) && (Math.abs(forwardSpeed) > Math.abs(rotateSpeed)))){
-            board.setForwardSpeed(forwardSpeed);
-        }
-        else if ((Math.abs(sideSpeed) > Math.abs(rotateSpeed) && (Math.abs(forwardSpeed) < Math.abs(sideSpeed)))) {
-            board.setSideMotorSpeed(sideSpeed);
-        }
-        else {
-            board.setRotateSpeed(rotateSpeed);
-        }
 
-        /*if (gamepad1.a){
-            board.launchDrone();
-        }
-         */
+            /* send telemetry to the driver of the arm's current position and target position */
+            telemetry.addData("armTarget: ", armMotor.getTargetPosition());
+            telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
+            telemetry.update();
 
-        //board.setArmSpeed(armSpeed);
-
-        /*
-        if(gamepad2.a){
-            //board.setServoDown();
-            //board.setServoDown();
-            //board.setRotationDirectionFORWARD();
-            board.setClawRotation(0.0);
         }
-        if(gamepad2.y){
-            //board.setServoUp();
-            //board.setRotationDirectionREVERSE();
-            board.setClawRotation(0.25);
-        }
-        if(gamepad2.x){
-            board.setClaw_1Active();
-        }
-        if(gamepad2.b){
-            board.setClaw_2Active();
-        }
-        if(gamepad2.right_bumper){
-            board.setClaw_1Inactive();
-            board.setClaw_2Inactive();
-        }
-
-        if(gamepad2.dpad_up){
-            MoveArmDegrees(15, 0.3);
-        }
-        if(gamepad2.dpad_down){
-            MoveArmDegrees(-15, 0.3);
-        }
-        if(gamepad2.dpad_left){
-            board.setClawRotation(0.2);
-        }
-        if(gamepad2.dpad_right){
-            board.setClawRotation(0.15);
-        }
-        */
-
-        //telemetry.addData("Arm Speed: ", armSpeed);
-        telemetry.addData("Motor speed: ", forwardSpeed);
-        telemetry.addData("Motor rotations: ", board.getMotorRotations());
-        telemetry.addData("Distance: ", millimeters);
-        telemetry.addData("gear: ", gear);
-        telemetry.update();
     }
-    /*public void MoveArmDegrees(double degrees, double Speed){
-        double initialArmRotation = board.getArmMotorRotations();
-        double angleDeg = Math.abs(armconstant * (board.getArmMotorRotations() - initialArmRotation));
-        if (degrees > 0) {
-            while (angleDeg < degrees) {
-                //elevatorheight();
-                board.setArmSpeed(Speed);
-                angleDeg = (armconstant * (board.getArmMotorRotations() - initialArmRotation));
-                telemetry.addData("arm angle (degrees) ", angleDeg);
-                telemetry.update();
-            }
-        }
-        else if (degrees < 0) {
-            while (angleDeg > degrees) {
-                //elevatorheight();
-                board.setArmSpeed(-Speed);
-                angleDeg = (armconstant * (board.getArmMotorRotations() - initialArmRotation));
-                telemetry.addData("arm angle (degrees) ", angleDeg);
-                telemetry.update();
-            }
-        }
-        board.setArmSpeed(0);
-        telemetry.addData("degrees?", angleDeg);
-        telemetry.update();
-
-     */
-
 }
-
-

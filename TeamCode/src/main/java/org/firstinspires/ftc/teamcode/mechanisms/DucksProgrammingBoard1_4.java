@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -12,13 +13,17 @@ public class DucksProgrammingBoard1_4 {
     private DcMotor motor2;
     private DcMotor motor3;
     private double ticksPerRotation;
-    private DcMotor motor_arm_0;
-    private Servo clawRotation;
-    private Servo servo;
-    private double armTicksPerRotation;
-    private Servo CLAW_1;
-    private Servo CLAW_2;
-    private Servo droneLauncher;
+    private DcMotor armMotor;
+    private CRServo intake;
+    private Servo wrist;
+    //private Servo clawRotation;
+    //private Servo servo;
+    //private double armTicksPerRotation;
+    //private Servo CLAW_1;
+    //private Servo CLAW_2;
+    //private Servo droneLauncher;
+
+
     /*
     //private Servo claw_left;
     //private Servo claw_right;
@@ -41,14 +46,20 @@ public class DucksProgrammingBoard1_4 {
         motor3 = hwMap.get(DcMotor.class, "motor3");
         motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ticksPerRotation = motor1.getMotorType().getTicksPerRev();
-        motor_arm_0 = hwMap.get(DcMotor.class, "motor_arm_0");
-        motor_arm_0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armTicksPerRotation = motor_arm_0.getMotorType().getTicksPerRev();
-        clawRotation = hwMap.get(Servo.class, "clawRotation");
-        CLAW_1 = hwMap.get(Servo.class, "CLAW_1");
-        CLAW_2 = hwMap.get(Servo.class, "CLAW_2");
-        droneLauncher = hwMap.get(Servo.class, "droneLauncher");
-        droneLauncher.setDirection(Servo.Direction.REVERSE);
+        //armMotor = hwMap.get(DcMotor.class, "armMotor");
+        //armMotor.setTargetPosition(0);
+        //armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //intake = hwMap.get(CRServo.class, "intake");
+        //wrist = hwMap.get(Servo.class, "wrist");
+        //motor_arm_0 = hwMap.get(DcMotor.class, "motor_arm_0");
+        //motor_arm_0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //armTicksPerRotation = motor_arm_0.getMotorType().getTicksPerRev();
+        //clawRotation = hwMap.get(Servo.class, "clawRotation");
+        //CLAW_1 = hwMap.get(Servo.class, "CLAW_1");
+        //CLAW_2 = hwMap.get(Servo.class, "CLAW_2");
+        //droneLauncher = hwMap.get(Servo.class, "droneLauncher");
+        //droneLauncher.setDirection(Servo.Direction.REVERSE);
         //claw_left = hwMap.get(Servo.class, "claw_left");
         //claw_right = hwMap.get(Servo.class, "claw_right");
         //claw_right.setDirection(Servo.Direction.REVERSE);
@@ -88,11 +99,10 @@ public class DucksProgrammingBoard1_4 {
         motor2.setPower(-speed);
         motor3.setPower(speed);
     }
-    public void launchDrone(){
-        droneLauncher.setPosition(180);
-    }
-
-
+    //public void launchDrone(){
+        //droneLauncher.setPosition(180);
+    //}
+    /*
     //functions for arm movement
     public void setArmSpeed(double armspeed) {
         motor_arm_0.setPower(armspeed);
@@ -107,6 +117,7 @@ public class DucksProgrammingBoard1_4 {
             clawRotation.setPosition(-position);
         }
     }
+
 
     //public void setServoDown(){
         //servo.setPosition(0.0);
@@ -182,12 +193,12 @@ public class DucksProgrammingBoard1_4 {
         //DuckServo_2.setPosition(0);
         //DuckServo_3.setPosition(0);
     }
-
+/*/
     //motor position return statements
     public double getMotorRotations() {
         return motor1.getCurrentPosition() / ticksPerRotation;
     }
-    public double getArmMotorRotations() {
-        return motor_arm_0.getCurrentPosition() / armTicksPerRotation;
-    }
+    //public double getArmMotorRotations() {
+       // return motor_arm_0.getCurrentPosition() / armTicksPerRotation;
+    //}
 }

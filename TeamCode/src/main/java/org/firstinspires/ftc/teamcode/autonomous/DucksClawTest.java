@@ -15,7 +15,7 @@ public class DucksClawTest extends LinearOpMode{
         waitForStart();
         while (opModeIsActive()) {
             if (state == 0) {
-                board.setClawRotation(0.1);
+                //board.setClawRotation(0.1);
                 state=1;
             }
             if (state == 1){

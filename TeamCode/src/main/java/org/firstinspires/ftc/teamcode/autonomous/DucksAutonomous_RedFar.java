@@ -67,15 +67,15 @@ public class DucksAutonomous_RedFar extends OpMode {
             visionPortal.close();
             visionPortal = VisionPortal.easyCreateWithDefaults(
                     hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
-            board.setClaw_1Active();
-            board.setClaw_2Active();
-            board.setClawRotation(0);
+            //board.setClaw_1Active();
+            //board.setClaw_2Active();
+            //board.setClawRotation(0);
             state = 1;
         } else if (state == 1) {
             ducksSleepMilliSec(500);
             state = 2;
         } else if (state == 2) {
-            MoveArmDegrees(15, 0.7);
+            //MoveArmDegrees(15, 0.7);
             state = 6;
         } else if (state == 6) {
             //ducksSleepMilliSec(1000);
@@ -84,21 +84,21 @@ public class DucksAutonomous_RedFar extends OpMode {
             if (Position.equals(FirstVisionProcessor.Selected.MIDDLE)) {
                 position = 2;
                 MoveSidewaysDistance(-130, 0.4);
-                MoveArmDegrees(15, 0.7);
-                centerPlacement();
+                //MoveArmDegrees(15, 0.7);
+                //centerPlacement();
                 state = 11;
             } else if (Position == FirstVisionProcessor.Selected.RIGHT) {
                 position = 1;
                 MoveSidewaysDistance(90, 0.4);
-                MoveArmDegrees(15, 0.7);
-                leftPlacement();
+                //MoveArmDegrees(15, 0.7);
+                //leftPlacement();
                 state = 11;
             } else {
                 position = 3;
                 //MoveSidewaysDistance(-75);
                 MoveSidewaysDistance(-130, 0.4);
-                MoveArmDegrees(15, 0.7);
-                rightPlacement();
+                //MoveArmDegrees(15, 0.7);
+                //rightPlacement();
                 state = 11;
             }
         }
@@ -261,6 +261,8 @@ public class DucksAutonomous_RedFar extends OpMode {
         board.setForwardSpeed(0);
     }
      */
+
+    /*
     public void MoveArmDegrees(double degrees, double Speed){
         double initialArmRotation = board.getArmMotorRotations();
         double angleDeg = Math.abs(armconstant * (board.getArmMotorRotations() - initialArmRotation));
@@ -385,6 +387,8 @@ public class DucksAutonomous_RedFar extends OpMode {
         //telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
         //telemetry.addLine("RBE = Range, Bearing & Elevation");
     }
+
+     */
 
 }
 

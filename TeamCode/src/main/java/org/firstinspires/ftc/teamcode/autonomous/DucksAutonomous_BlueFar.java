@@ -67,15 +67,15 @@ public class DucksAutonomous_BlueFar extends OpMode {
             visionPortal.close();
             visionPortal = VisionPortal.easyCreateWithDefaults(
                     hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
-            board.setClaw_1Active();
-            board.setClaw_2Active();
-            board.setClawRotation(0);
+            //board.setClaw_1Active();
+            //board.setClaw_2Active();
+            //board.setClawRotation(0);
             state = 1;
         } else if (state == 1) {
             ducksSleepMilliSec(500);
             state = 2;
         } else if (state == 2) {
-            MoveArmDegrees(15, 0.7);
+            //MoveArmDegrees(15, 0.7);
             state = 6;
         } else if (state == 6) {
             //ducksSleepMilliSec(1000);
@@ -84,20 +84,20 @@ public class DucksAutonomous_BlueFar extends OpMode {
             if (Position.equals(FirstVisionProcessor.Selected.MIDDLE)) {
                 position = 2;
                 MoveSidewaysDistance(130, 0.4);
-                MoveArmDegrees(15, 0.7);
+                //MoveArmDegrees(15, 0.7);
                 centerPlacement();
                 state = 11;
             } else if (Position == FirstVisionProcessor.Selected.LEFT) {
                 position = 1;
                 MoveSidewaysDistance(130, 0.4);
-                MoveArmDegrees(15, 0.7);
+                //MoveArmDegrees(15, 0.7);
                 leftPlacement();
                 state = 11;
             } else {
                 position = 3;
                 //MoveSidewaysDistance(-75);
                 MoveSidewaysDistance(130, 0.4);
-                MoveArmDegrees(15, 0.7);
+                //MoveArmDegrees(15, 0.7);
                 rightPlacement();
                 state = 11;
             }
@@ -261,6 +261,7 @@ public class DucksAutonomous_BlueFar extends OpMode {
         board.setForwardSpeed(0);
     }
      */
+    /*
     public void MoveArmDegrees(double degrees, double Speed){
         double initialArmRotation = board.getArmMotorRotations();
         double angleDeg = Math.abs(armconstant * (board.getArmMotorRotations() - initialArmRotation));
@@ -285,6 +286,8 @@ public class DucksAutonomous_BlueFar extends OpMode {
         telemetry.update();
     }
 
+     */
+
     public void leftPlacement () {
         //MoveSidewaysDistance(-95);
         MoveForwardDistance(800, 0.7);
@@ -295,12 +298,12 @@ public class DucksAutonomous_BlueFar extends OpMode {
         //ducksSleepMilliSec(500);
         MoveForwardDistance(-240, 0.6);
         //ducksSleepMilliSec(500);
-        board.setClawRotation(0.0);
-        MoveArmDegrees(-28, 0.6);
+        //board.setClawRotation(0.0);
+        //MoveArmDegrees(-28, 0.6);
         ducksSleepMilliSec(300);
-        board.setClaw_1Inactive();
+        //board.setClaw_1Inactive();
         //ducksSleepMilliSec(100);
-        MoveArmDegrees(15, 0.6);
+        //MoveArmDegrees(15, 0.6);
         //ducksSleepMilliSec(500);
         MoveForwardDistance(-50, 0.4);
         ducksSleepMilliSec(300);
@@ -314,12 +317,12 @@ public class DucksAutonomous_BlueFar extends OpMode {
         ducksSleepMilliSec(500);
         MoveForwardDistance(-175, 0.4);
         ducksSleepMilliSec(500);
-        board.setClawRotation(0.0);
-        MoveArmDegrees(-28, 0.6);
+        //board.setClawRotation(0.0);
+        //MoveArmDegrees(-28, 0.6);
         ducksSleepMilliSec(500);
-        board.setClaw_1Inactive();
+        //board.setClaw_1Inactive();
         ducksSleepMilliSec(500);
-        MoveArmDegrees(15, 0.6);
+        //MoveArmDegrees(15, 0.6);
         //board.setClawRotation(0.7);
         MoveForwardDistance(-50, 0.4);
         ducksSleepMilliSec(500);
@@ -338,12 +341,12 @@ public class DucksAutonomous_BlueFar extends OpMode {
         //ducksSleepMilliSec(500);
         MoveForwardDistance(-240, 0.6);
         //ducksSleepMilliSec(500);
-        board.setClawRotation(0.0);
-        MoveArmDegrees(-28, 0.6);
+        //board.setClawRotation(0.0);
+        //MoveArmDegrees(-28, 0.6);
         ducksSleepMilliSec(300);
-        board.setClaw_1Inactive();
+        //board.setClaw_1Inactive();
         //ducksSleepMilliSec(100);
-        MoveArmDegrees(15, 0.6);
+        //MoveArmDegrees(15, 0.6);
         //ducksSleepMilliSec(500);
         MoveForwardDistance(-50, 0.4);
         //ducksSleepMilliSec(300);
@@ -390,6 +393,7 @@ public class DucksAutonomous_BlueFar extends OpMode {
         telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
         //telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
         //telemetry.addLine("RBE = Range, Bearing & Elevation");
+
     }
 
 }

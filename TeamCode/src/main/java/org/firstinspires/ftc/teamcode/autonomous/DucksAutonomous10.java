@@ -17,7 +17,7 @@ import java.util.List;
 public class DucksAutonomous10 extends OpMode {
     DucksProgrammingBoard1_4 board = new DucksProgrammingBoard1_4();
     double forwardconstant = Math.PI * 75 * 523.875 / 457.2 * 514.35 / 457.2 * 417.5125 / 457.2 * 665 / 635 * 641 / 635 * 638 / 635;
-    double rotationConstant = 360 * ((75 * Math.PI) / (545 * Math.PI)) * 92 / 90 * 90.7 / 90 * 88.8103 / 90 * 177/180;
+    double rotationConstant = 360 * ((75 * Math.PI) / (545 * Math.PI)) * 92 / 90 * 90.7 / 90 * 88.8103 / 90 * 177 / 180;
     double sideconstant = Math.PI * 75 * 534 / 508 * 510 / 508 * 512 / 508;
     double armconstant = 360 * 30 / 125 * 30 / 125;
     int state;
@@ -48,14 +48,17 @@ public class DucksAutonomous10 extends OpMode {
                 visionProcessor);
         board.init(hardwareMap);
     }
+
     @Override
     public void init_loop() {
         telemetry.addData("Identified_loop",
                 visionProcessor.getSelection());
     }
+
     @Override
     public void start() {
     }
+
     @Override
     public void loop() {
         /*if (state ==0){
@@ -67,15 +70,15 @@ public class DucksAutonomous10 extends OpMode {
             visionPortal.close();
             visionPortal = VisionPortal.easyCreateWithDefaults(
                     hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
-            board.setClaw_1Active();
-            board.setClaw_2Active();
-            board.setClawRotation(0);
+            //board.setClaw_1Active();
+            //board.setClaw_2Active();
+            //board.setClawRotation(0);
             state = 1;
         } else if (state == 1) {
             ducksSleepMilliSec(500);
             state = 2;
         } else if (state == 2) {
-            MoveArmDegrees(30, 0.7);
+            //MoveArmDegrees(30, 0.7);
             state = 6;
         } else if (state == 6) {
             //ducksSleepMilliSec(1000);
@@ -84,27 +87,26 @@ public class DucksAutonomous10 extends OpMode {
             if (Position.equals(FirstVisionProcessor.Selected.MIDDLE)) {
                 position = 2;
                 MoveSidewaysDistance(130, 0.4);
-                centerPlacement();
+                //centerPlacement();
                 state = 11;
             } else if (Position == FirstVisionProcessor.Selected.LEFT) {
                 position = 1;
                 MoveSidewaysDistance(-90, 0.4);
-                leftPlacement();
+                //leftPlacement();
                 state = 11;
             } else {
                 position = 3;
                 //MoveSidewaysDistance(-75);
                 MoveSidewaysDistance(130, 0.4);
-                rightPlacement();
+                //rightPlacement();
                 state = 11;
             }
-        }
-        else if (state == 11) {
+        } else if (state == 11) {
             ducksSleepMilliSec(1000);
-            telemetryAprilTag();
+            //telemetryAprilTag();
             telemetry.addData("state11 align x for pos ", position);
             if (position == 1) {
-                telemetry.addData("id_1_x_position",id_1_x_position);
+                telemetry.addData("id_1_x_position", id_1_x_position);
                 if (Math.abs(id_1_x_position) > 1) {
                     MoveSidewaysDistance(id_1_x_position * 25.4, 0.3);
                     /*if (id_1_x_position > 0) {
@@ -117,7 +119,7 @@ public class DucksAutonomous10 extends OpMode {
                     state = 12;
                 }
             } else if (position == 2) {
-                telemetry.addData("id_2_x_position",id_2_x_position);
+                telemetry.addData("id_2_x_position", id_2_x_position);
                 if (Math.abs(id_2_x_position) > 1) {
                     MoveSidewaysDistance(id_2_x_position * 25.4, 0.3);
                     /*if (id_2_x_position > 0) {
@@ -134,7 +136,7 @@ public class DucksAutonomous10 extends OpMode {
                     state = 12;
                 }
             } else {
-                telemetry.addData("id_3_x_position",id_3_x_position);
+                telemetry.addData("id_3_x_position", id_3_x_position);
                 if (Math.abs(id_3_x_position) > 1) {
                     MoveSidewaysDistance(id_3_x_position * 25.4, 0.3);
                     /*if (id_3_x_position > 0) {
@@ -152,7 +154,7 @@ public class DucksAutonomous10 extends OpMode {
             //
             state = 13;
         } else if (state == 13) {
-            telemetryAprilTag();
+            //telemetryAprilTag();
             //telemetry.addData("main loop", id_1_y_position);
             if (position == 1) {
                 if (id_1_y_position > 20) {
@@ -183,17 +185,17 @@ public class DucksAutonomous10 extends OpMode {
 
         } else if (state == 14) {
             MoveSidewaysDistance(140, 0.2);
-            board.setClawRotation(0.25);
+            //board.setClawRotation(0.25);
             //MoveForwardDistance(45, 0.6);
             state = 15;
         } else if (state == 15) {
-            board.setClaw_2Inactive();
+            //board.setClaw_2Inactive();
             ducksSleepMilliSec(300);
             state = 16;
         } else if (state == 16) {
             MoveForwardDistance(-100, 0.4);
             ducksSleepMilliSec(200);
-            board.setClawRotation(0.0);
+            //board.setClawRotation(0.0);
             if (position == 1) {
                 MoveSidewaysDistance(-450, 0.2);
             } else if (position == 2) {
@@ -210,27 +212,29 @@ public class DucksAutonomous10 extends OpMode {
         telemetry.update();
 
     }
+
     public void MoveRotateDegrees(double degrees, double rotateSpeed) {
         double initialWheelRotation = board.getMotorRotations();
         double deg_tolerance = 0.5;
         double delta_deg;
-        delta_deg = degrees - (rotationConstant * (board.getMotorRotations()-initialWheelRotation));
-        while (Math.abs(delta_deg) > deg_tolerance ){
+        delta_deg = degrees - (rotationConstant * (board.getMotorRotations() - initialWheelRotation));
+        while (Math.abs(delta_deg) > deg_tolerance) {
             if (delta_deg > 0) {
                 board.setRotateSpeed(rotateSpeed);
-            } else if (delta_deg < 0){
+            } else if (delta_deg < 0) {
                 board.setRotateSpeed(-rotateSpeed);
             }
-            delta_deg= degrees - (rotationConstant * (board.getMotorRotations()-initialWheelRotation));
-            if (Math.abs(delta_deg) < deg_tolerance){
+            delta_deg = degrees - (rotationConstant * (board.getMotorRotations() - initialWheelRotation));
+            if (Math.abs(delta_deg) < deg_tolerance) {
                 board.setRotateSpeed(0);
                 ducksSleepMilliSec(100);
-                delta_deg= degrees - (rotationConstant * (board.getMotorRotations()-initialWheelRotation));
-                rotateSpeed=0.1;
+                delta_deg = degrees - (rotationConstant * (board.getMotorRotations() - initialWheelRotation));
+                rotateSpeed = 0.1;
             }
         }
         board.setRotateSpeed(0);
     }
+
     /*
         public void MoveRotateDegrees(double degrees, double rotateSpeed) {
             double initialWheelRotation = board.getMotorRotations();
@@ -256,30 +260,31 @@ public class DucksAutonomous10 extends OpMode {
             board.setRotateSpeed(0);
         }
      */
-    public void ducksSleepMilliSec(int sleepTime){
+    public void ducksSleepMilliSec(int sleepTime) {
         try {
             Thread.sleep(sleepTime);
-        } catch(InterruptedException e){
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
+
     public void MoveForwardDistance(double distance, double forwardSpeed) {
         double initialWheelRotation = board.getMotorRotations();
         double mm_tolerance = 10;
         double delta_mm;
-        delta_mm = distance - (forwardconstant * (board.getMotorRotations()-initialWheelRotation));
-        while (Math.abs(delta_mm) > mm_tolerance ){
+        delta_mm = distance - (forwardconstant * (board.getMotorRotations() - initialWheelRotation));
+        while (Math.abs(delta_mm) > mm_tolerance) {
             if (delta_mm > 0) {
                 board.setForwardSpeed(forwardSpeed);
-            } else if (delta_mm < 0){
+            } else if (delta_mm < 0) {
                 board.setForwardSpeed(-forwardSpeed);
             }
-            delta_mm= distance - (forwardconstant * (board.getMotorRotations()-initialWheelRotation));
-            if (Math.abs(delta_mm) < mm_tolerance){
+            delta_mm = distance - (forwardconstant * (board.getMotorRotations() - initialWheelRotation));
+            if (Math.abs(delta_mm) < mm_tolerance) {
                 board.setForwardSpeed(0);
                 ducksSleepMilliSec(100);
-                delta_mm= distance - (forwardconstant * (board.getMotorRotations()-initialWheelRotation));
-                forwardSpeed =0.1;
+                delta_mm = distance - (forwardconstant * (board.getMotorRotations() - initialWheelRotation));
+                forwardSpeed = 0.1;
             }
 
         }
@@ -322,23 +327,24 @@ public class DucksAutonomous10 extends OpMode {
         double initialWheelRotation = board.getMotorRotations();
         double side_tolerance = 2;
         double delta_side;
-        delta_side = distance - (sideconstant * (board.getMotorRotations()-initialWheelRotation));
-        while (Math.abs(delta_side) > side_tolerance ){
+        delta_side = distance - (sideconstant * (board.getMotorRotations() - initialWheelRotation));
+        while (Math.abs(delta_side) > side_tolerance) {
             if (delta_side > 0) {
                 board.setSideMotorSpeed(sideSpeed);
-            } else if (delta_side < 0){
+            } else if (delta_side < 0) {
                 board.setSideMotorSpeed(-sideSpeed);
             }
-            delta_side= distance - (sideconstant * (board.getMotorRotations()-initialWheelRotation));
-            if (Math.abs(delta_side) < side_tolerance){
+            delta_side = distance - (sideconstant * (board.getMotorRotations() - initialWheelRotation));
+            if (Math.abs(delta_side) < side_tolerance) {
                 board.setSideMotorSpeed(0);
                 ducksSleepMilliSec(100);
-                delta_side= distance - (sideconstant * (board.getMotorRotations()-initialWheelRotation));
-                sideSpeed=0.1;
+                delta_side = distance - (sideconstant * (board.getMotorRotations() - initialWheelRotation));
+                sideSpeed = 0.1;
             }
         }
         board.setSideMotorSpeed(0);
     }
+}
 
 
     /*public void MoveSidewaysDistance(double distance) {
@@ -363,6 +369,8 @@ public class DucksAutonomous10 extends OpMode {
         board.setForwardSpeed(0);
     }
      */
+
+    /*
     public void MoveArmDegrees(double degrees, double Speed){
         double initialArmRotation = board.getArmMotorRotations();
         double angleDeg = Math.abs(armconstant * (board.getArmMotorRotations() - initialArmRotation));
