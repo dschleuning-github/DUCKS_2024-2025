@@ -28,8 +28,12 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.mechanisms.DucksProgrammingBoard1_4;
 
 /*
  * This OpMode is an example driver-controlled (TeleOp) mode for the goBILDA 2024-2025 FTC
@@ -69,6 +73,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 @TeleOp
 //@Disabled
 public class DucksVersion2 extends LinearOpMode {
+
+    DucksProgrammingBoard1_4 board = new DucksProgrammingBoard1_4();
+    double gear = 1.0;
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
 
     /* Declare OpMode members. */
     //public DcMotor  leftDrive   = null; //the left drivetrain motor
@@ -131,8 +141,24 @@ public class DucksVersion2 extends LinearOpMode {
     double armPositionFudgeFactor;
 
 
+    //DucksProgrammingBoard1_4 board = new DucksProgrammingBoard1_4();
+    //double gear = 1.0;
+    double armconstant = 360 * 30/125 * 30/125 ;
+    //private ElapsedTime runtime = new ElapsedTime();
+    //private DcMotor leftDrive = null;
+    //private DcMotor rightDrive = null;
+
+
+
     @Override
     public void runOpMode() {
+        board.init(hardwareMap);
+
+
+
+        //telemetry.addData("Motor speed: ", forwardSpeed);
+
+
         /*
         These variables are private to the OpMode, and are used to control the drivetrain.
          */
@@ -191,6 +217,57 @@ public class DucksVersion2 extends LinearOpMode {
 
         /* Run until the driver presses stop */
         while (opModeIsActive()) {
+
+            double forwardSpeed = -gamepad2.right_stick_y; //*gear
+            double sideSpeed = gamepad2.right_stick_x; //*gear
+            double rotateSpeed = gamepad2.left_stick_x; //*gear
+            //double armSpeed = -gamepad2.left_stick_y;
+            //double millimeters = Math.PI * 80 * board.getMotorRotations();
+
+            //leftDrive  = hardwareMap.get(DcMotor.class, "hangingarm_1");
+            //rightDrive = hardwareMap.get(DcMotor.class, "hangingarm_2");
+
+            //leftDrive.setDirection(DcMotor.Direction.FORWARD);
+            //rightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+            double leftPower;
+            double rightPower;
+
+            //double leftMotor = 0.87 * gamepad2.right_stick_y;
+            //double rightMotor  = 1.0 * gamepad2.right_stick_y;
+            //leftPower    = Range.clip(leftMotor, -1.0, 1.0) ;
+            //rightPower   = Range.clip(rightMotor, -1.0, 1.0) ;
+            //leftDrive.setPower(leftPower);
+            //rightDrive.setPower(rightPower);
+            /*
+            if (gamepad2.right_stick_y < -0.1){
+                leftDrive.setPower(0);
+                rightDrive.setPower(0);
+            }
+            */
+
+            if(gamepad2.right_bumper) {
+                gear += .01;
+                if (gear > 3) {
+                    gear =3;
+                }
+            }
+            if(gamepad2.left_bumper){
+                gear -= .01;
+                if (gear < 0.001) {
+                    gear = 0.001;
+                }
+            }
+
+            if ((Math.abs(forwardSpeed) > Math.abs(sideSpeed) && (Math.abs(forwardSpeed) > Math.abs(rotateSpeed)))){
+                board.setForwardSpeed(forwardSpeed);
+            }
+            else if ((Math.abs(sideSpeed) > Math.abs(rotateSpeed) && (Math.abs(forwardSpeed) < Math.abs(sideSpeed)))) {
+                board.setSideMotorSpeed(sideSpeed);
+            }
+            else {
+                board.setRotateSpeed(rotateSpeed);
+            }
 
             /* Set the drive and turn variables to follow the joysticks on the gamepad.
             the joysticks decrease as you push them up. So reverse the Y axis. */
@@ -358,6 +435,8 @@ public class DucksVersion2 extends LinearOpMode {
             /* send telemetry to the driver of the arm's current position and target position */
             telemetry.addData("armTarget: ", armMotor.getTargetPosition());
             telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
+            telemetry.addData("Motor speed: ", forwardSpeed);
+            telemetry.addData("Gear: ", gear);
             telemetry.update();
 
         }
