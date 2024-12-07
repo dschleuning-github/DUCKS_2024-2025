@@ -129,8 +129,8 @@ public class DucksVersion2 extends LinearOpMode {
     final double INTAKE_DEPOSIT    =  0.5;
 
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
-    final double WRIST_FOLDED_IN   = 0.8333;
-    final double WRIST_FOLDED_OUT  = 0.5;
+    final double WRIST_FOLDED_IN   = 0.79;
+    final double WRIST_FOLDED_OUT  = 0.4;
     final double WRIST_ZERO = 0.0;
 
     /* A number in degrees that the triggers can adjust the arm position by */
@@ -218,9 +218,9 @@ public class DucksVersion2 extends LinearOpMode {
         /* Run until the driver presses stop */
         while (opModeIsActive()) {
 
-            double forwardSpeed = -gamepad2.right_stick_y; //*gear
-            double sideSpeed = gamepad2.right_stick_x; //*gear
-            double rotateSpeed = gamepad2.left_stick_x; //*gear
+            double forwardSpeed = -gamepad2.right_stick_y*gear;
+            double sideSpeed = gamepad2.right_stick_x*gear;
+            double rotateSpeed = gamepad2.left_stick_x*0.5;
             //double armSpeed = -gamepad2.left_stick_y;
             //double millimeters = Math.PI * 80 * board.getMotorRotations();
 
@@ -336,8 +336,8 @@ public class DucksVersion2 extends LinearOpMode {
             if(gamepad1.right_bumper){
                 /* This is the intaking/collecting arm position */
                 armPosition = ARM_COLLECT;
-                wrist.setPosition(0.6);
-                //wrist.setPosition(WRIST_FOLDED_OUT);
+                //wrist.setPosition(0.6);
+                wrist.setPosition(WRIST_FOLDED_OUT);
                 intake.setPower(INTAKE_COLLECT);
             }
 
@@ -359,31 +359,31 @@ public class DucksVersion2 extends LinearOpMode {
                     back to folded inside the robot. This is also the starting configuration */
                 armPosition = ARM_COLLAPSED_INTO_ROBOT;
                 intake.setPower(INTAKE_OFF);
-                wrist.setPosition(0.8333);
-                //wrist.setPosition(WRIST_FOLDED_IN);
+                //wrist.setPosition(0.8333);
+                wrist.setPosition(WRIST_FOLDED_IN);
             }
 
             else if (gamepad1.dpad_right){
                 /* This is the correct height to score SPECIMEN on the HIGH CHAMBER */
                 armPosition = ARM_SCORE_SPECIMEN;
-                wrist.setPosition(0.8333);
-                //wrist.setPosition(WRIST_FOLDED_IN);
+                //wrist.setPosition(0.8333);
+                wrist.setPosition(WRIST_FOLDED_IN);
             }
 
             else if (gamepad1.dpad_up){
                 /* This sets the arm to vertical to hook onto the LOW RUNG for hanging */
                 armPosition = ARM_ATTACH_HANGING_HOOK;
                 intake.setPower(INTAKE_OFF);
-                wrist.setPosition(0.8333);
-                //wrist.setPosition(WRIST_FOLDED_IN);
+                //wrist.setPosition(0.8333);
+                wrist.setPosition(WRIST_FOLDED_IN);
             }
 
             else if (gamepad1.dpad_down){
                 /* this moves the arm down to lift the robot up once it has been hooked */
                 armPosition = ARM_WINCH_ROBOT;
                 intake.setPower(INTAKE_OFF);
-                wrist.setPosition(0.8333);
-                //wrist.setPosition(WRIST_FOLDED_IN);
+                //wrist.setPosition(0.8333);
+                wrist.setPosition(WRIST_FOLDED_IN);
             }
 
 
