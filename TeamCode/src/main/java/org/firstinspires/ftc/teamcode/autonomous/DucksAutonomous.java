@@ -133,6 +133,9 @@ public class DucksAutonomous extends OpMode {
 
     @Override
     public void init_loop() {
+
+        intake.setPower(INTAKE_COLLECT);
+        wrist.setPosition(0.8333);
     }
 
     @Override
@@ -148,53 +151,61 @@ public class DucksAutonomous extends OpMode {
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         if (state == 0) {
-            armPosition = ARM_SCORE_SAMPLE_IN_LOW;
-            MoveForwardDistance(400, 0.4);
+            //armPosition = ARM_SCORE_SAMPLE_IN_LOW;
+            MoveForwardDistance(570, 0.4);
             state = 1;
         } else if (state == 1) {
-            ducksSleepMilliSec(3000);
+            ducksSleepMilliSec(1000);
+            armPosition = ARM_SCORE_SAMPLE_IN_LOW;
+            ducksSleepMilliSec(500);
+            //armMotor.setTargetPosition((int) (armPosition + armPositionFudgeFactor));
             state = 2;
         } else if (state == 2) {
-            intake.setPower(1.0);
-            ducksSleepMilliSec(1500);
-            intake.setPower(0);
+            armPosition = ARM_SCORE_SAMPLE_IN_LOW - 0.5;
+            ducksSleepMilliSec(3000);
+            MoveForwardDistance(-100, 0.5);
+            ducksSleepMilliSec(1000);
             state = 6;
         } else if (state == 6) {
-            MoveForwardDistance(-50, 0.3);
-            MoveSidewaysDistance(-250, 0.4);
-            ducksSleepMilliSec(500);
+            intake.setPower(1.0);
+            MoveForwardDistance(-50, 0.5);
+            ducksSleepMilliSec(1500);
+            intake.setPower(0);
+            armPosition = ARM_ATTACH_HANGING_HOOK;
             state = 7;
         } else if (state == 7) {
-            MoveRotateDegrees(-90, 0.2);
+            MoveSidewaysDistance(-700, 0.4);
             ducksSleepMilliSec(500);
-            MoveSidewaysDistance(100, 0.2);
+            //MoveRotateDegrees(-90, 0.2);
+            //ducksSleepMilliSec(500);
+            //MoveSidewaysDistance(100, 0.2);
             state = 8;
         } else if (state == 8) {
-            armPosition = ARM_COLLECT;
-            wrist.setPosition(0.5);
-            ducksSleepMilliSec(1000);
-            intake.setPower(-1.0);
+            //armPosition = ARM_ATTACH_HANGING_HOOK;
+            //wrist.setPosition(0.5);
+            //ducksSleepMilliSec(1000);
+            //intake.setPower(-1.0);
             state = 9;
 
         } else if (state == 9) {
-            MoveForwardDistance(100, 0.2);
+            MoveForwardDistance(900, 0.5);
             ducksSleepMilliSec(1000);
-            intake.setPower(0);
+            armPosition = ARM_SCORE_SAMPLE_IN_LOW;
             state = 10;
         } else if (state == 10) {
-            armPosition = ARM_SCORE_SAMPLE_IN_LOW;
-            ducksSleepMilliSec(300);
-            MoveForwardDistance(200, 0.4);
-            ducksSleepMilliSec(300);
-            MoveRotateDegrees(-45, 0.2);
-            ducksSleepMilliSec(1000);
-            MoveSidewaysDistance(200, 0.3);
+            //armPosition = ARM_SCORE_SAMPLE_IN_LOW;
+            //ducksSleepMilliSec(300);
+            //MoveForwardDistance(200, 0.4);
+            //ducksSleepMilliSec(300);
+            MoveRotateDegrees(90, 0.15);
+            //ducksSleepMilliSec(1000);
+            //MoveSidewaysDistance(200, 0.3);
             state = 11;
         } else if (state == 11) {
-            MoveForwardDistance(300, 0.4);
-            intake.setPower(1.0);
-            ducksSleepMilliSec(1000);
-            intake.setPower(0);
+            MoveForwardDistance(200, 0.3);
+            //intake.setPower(1.0);
+            //ducksSleepMilliSec(1000);
+            //intake.setPower(0);
             state = 12;
         } else if (state == 12) {
             //board.setClaw_2Inactive();
