@@ -155,9 +155,9 @@ public class DucksAutonomous extends OpMode {
             MoveSidewaysDistance(350, 0.2);
             MoveRotateDegrees(90, 0.1);
             ducksSleepMilliSec(500);
-            MoveSidewaysDistance(100, 0.2);
+            MoveSidewaysDistance(50, 0.1);
             ducksSleepMilliSec(200);
-            MoveForwardDistance(290, 0.3);
+            MoveForwardDistance(280, 0.3);
             state = 1;
         } else if (state == 1) {
             ducksSleepMilliSec(500);
@@ -179,7 +179,7 @@ public class DucksAutonomous extends OpMode {
             armPosition = ARM_ATTACH_HANGING_HOOK;
             state = 7;
         } else if (state == 7) {
-            MoveSidewaysDistance(-650, 0.4);
+            MoveSidewaysDistance(-670, 0.4);
             ducksSleepMilliSec(500);
             //MoveRotateDegrees(-90, 0.2);
             //ducksSleepMilliSec(500);
