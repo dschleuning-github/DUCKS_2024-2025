@@ -28,9 +28,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.DucksProgrammingBoard1_4;
@@ -86,6 +84,8 @@ public class DucksVersion3 extends LinearOpMode {
     public DcMotor  armMotor    = null; //the arm motor
     public CRServo  intake      = null; //the active intake servo
     public Servo    wrist       = null; //the wrist servo
+    public CRServo  duckLeft    = null;
+    public CRServo  duckRight   = null;
 
 
     /* This constant is the number of encoder ticks for each degree of rotation of the arm.
@@ -127,6 +127,9 @@ public class DucksVersion3 extends LinearOpMode {
     final double INTAKE_COLLECT    = -1.0;
     final double INTAKE_OFF        =  0.0;
     final double INTAKE_DEPOSIT    =  0.5;
+    final double duckLeft_On        = 0.2;
+    final double duckRight_On       = 0.1;
+    final double ducks_Off          = 0.0;
 
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
     final double WRIST_FOLDED_IN   = 0.79;
@@ -195,7 +198,7 @@ public class DucksVersion3 extends LinearOpMode {
         /* Before starting the armMotor. We'll make sure the TargetPosition is set to 0.
         Then we'll set the RunMode to RUN_TO_POSITION. And we'll ask it to stop and reset encoder.
         If you do not have the encoder plugged into this motor, it will not run in this code. */
-        armMotor.setTargetPosition(-10);
+        armMotor.setTargetPosition(10);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -203,10 +206,14 @@ public class DucksVersion3 extends LinearOpMode {
         /* Define and initialize servos.*/
         intake = hardwareMap.get(CRServo.class, "intake");
         wrist  = hardwareMap.get(Servo.class, "wrist");
+        duckLeft = hardwareMap.get(CRServo.class, "duckLeft");
+        duckRight = hardwareMap.get(CRServo.class,"duckRight");
 
         /* Make sure that the intake is off, and the wrist is folded in. */
         intake.setPower(INTAKE_OFF);
         wrist.setPosition(0.8333);
+        duckLeft.setPower(duckLeft_On);
+        duckRight.setPower(duckRight_On);
 
         /* Send telemetry message to signify robot waiting */
         telemetry.addLine("Robot Ready.");
@@ -245,6 +252,15 @@ public class DucksVersion3 extends LinearOpMode {
                 rightDrive.setPower(0);
             }
             */
+            if(gamepad2.b){
+                duckLeft.setPower(duckLeft_On);
+                duckRight.setPower(duckRight_On);
+            }
+            if(gamepad2.x){
+                duckLeft.setPower(ducks_Off);
+                duckRight.setPower(ducks_Off);
+            }
+
 
             if(gamepad2.right_bumper) {
                 gear += .01;
