@@ -124,7 +124,7 @@ public class DucksAutonomous2 extends OpMode {
 
         /* Make sure that the intake is off, and the wrist is folded in. */
         intake.setPower(0);
-        wrist.setPosition(0.8333);
+        wrist.setPosition(WRIST_FOLDED_IN);
 
 
     }
@@ -133,7 +133,7 @@ public class DucksAutonomous2 extends OpMode {
     public void init_loop() {
 
         intake.setPower(INTAKE_COLLECT);
-        wrist.setPosition(0.8333);
+        wrist.setPosition(WRIST_FOLDED_IN);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class DucksAutonomous2 extends OpMode {
             ducksSleepMilliSec(500);
             MoveSidewaysDistance(50, 0.1);
             ducksSleepMilliSec(200);
-            MoveForwardDistance(290, 0.3);
+            MoveForwardDistance(245, 0.3);
             state = 1;
         } else if (state == 1) {
             ducksSleepMilliSec(500);

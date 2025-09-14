@@ -84,7 +84,7 @@ public class DucksVersion3 extends LinearOpMode {
     public DcMotor  armMotor    = null; //the arm motor
     public CRServo  intake      = null; //the active intake servo
     public Servo    wrist       = null; //the wrist servo
-    public CRServo  duckLeft    = null;
+    //public CRServo  duckLeft    = null;
     public CRServo  duckRight   = null;
 
 
@@ -127,7 +127,7 @@ public class DucksVersion3 extends LinearOpMode {
     final double INTAKE_COLLECT    = -1.0;
     final double INTAKE_OFF        =  0.0;
     final double INTAKE_DEPOSIT    =  0.5;
-    final double duckLeft_On        = 0.2;
+    //final double duckLeft_On        = 0.2;
     final double duckRight_On       = 0.1;
     final double ducks_Off          = 0.0;
 
@@ -206,14 +206,14 @@ public class DucksVersion3 extends LinearOpMode {
         /* Define and initialize servos.*/
         intake = hardwareMap.get(CRServo.class, "intake");
         wrist  = hardwareMap.get(Servo.class, "wrist");
-        duckLeft = hardwareMap.get(CRServo.class, "duckLeft");
+        //duckLeft = hardwareMap.get(CRServo.class, "duckLeft");
         duckRight = hardwareMap.get(CRServo.class,"duckRight");
 
         /* Make sure that the intake is off, and the wrist is folded in. */
         intake.setPower(INTAKE_OFF);
         wrist.setPosition(0.8333);
-        duckLeft.setPower(duckLeft_On);
-        duckRight.setPower(duckRight_On);
+        //duckLeft.setPower(duckLeft_On);
+
 
         /* Send telemetry message to signify robot waiting */
         telemetry.addLine("Robot Ready.");
@@ -224,6 +224,8 @@ public class DucksVersion3 extends LinearOpMode {
 
         /* Run until the driver presses stop */
         while (opModeIsActive()) {
+
+            duckRight.setPower(duckRight_On);
 
             double forwardSpeed = -gamepad2.right_stick_y*gear;
             double sideSpeed = gamepad2.right_stick_x*gear;
@@ -253,11 +255,11 @@ public class DucksVersion3 extends LinearOpMode {
             }
             */
             if(gamepad2.b){
-                duckLeft.setPower(duckLeft_On);
+                //duckLeft.setPower(duckLeft_On);
                 duckRight.setPower(duckRight_On);
             }
             if(gamepad2.x){
-                duckLeft.setPower(ducks_Off);
+                //duckLeft.setPower(ducks_Off);
                 duckRight.setPower(ducks_Off);
             }
 
@@ -453,6 +455,7 @@ public class DucksVersion3 extends LinearOpMode {
             telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
             telemetry.addData("Motor speed: ", forwardSpeed);
             telemetry.addData("Gear: ", gear);
+            telemetry.addData("Dad Data: ", 100.0);
             telemetry.update();
 
         }

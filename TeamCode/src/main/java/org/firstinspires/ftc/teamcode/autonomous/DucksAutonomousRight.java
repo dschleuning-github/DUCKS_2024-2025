@@ -124,7 +124,7 @@ public class DucksAutonomousRight extends OpMode {
 
         /* Make sure that the intake is off, and the wrist is folded in. */
         intake.setPower(0);
-        wrist.setPosition(0.8333);
+        wrist.setPosition(WRIST_FOLDED_IN);
 
 
     }
@@ -133,7 +133,7 @@ public class DucksAutonomousRight extends OpMode {
     public void init_loop() {
 
         intake.setPower(INTAKE_COLLECT);
-        wrist.setPosition(0.8333);
+        wrist.setPosition(WRIST_FOLDED_IN);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class DucksAutonomousRight extends OpMode {
             ducksSleepMilliSec(500);
             MoveSidewaysDistance(-150, 0.4);
             //ducksSleepMilliSec(200);
-            MoveForwardDistance(265, 0.4);
+            MoveForwardDistance(245, 0.4);
             state = 1;
         } else if (state == 1) {
             //ducksSleepMilliSec(500);
@@ -179,7 +179,7 @@ public class DucksAutonomousRight extends OpMode {
         } else if (state == 7) {
             armPosition = ARM_COLLAPSED_INTO_ROBOT;
             ducksSleepMilliSec(1000);
-            MoveSidewaysDistance(670, 0.5);
+            MoveSidewaysDistance(700, 0.5);
             ducksSleepMilliSec(500);
             //wrist.setPosition(WRIST_FOLDED_OUT);
             //armPosition = ARM_COLLECT;
@@ -189,7 +189,7 @@ public class DucksAutonomousRight extends OpMode {
             //MoveRotateDegrees(90, 0.15);
             MoveForwardDistance(950, 0.5);
             ducksSleepMilliSec(500);
-            MoveSidewaysDistance(500, 0.5);
+            MoveSidewaysDistance(400, 0.5);
             ducksSleepMilliSec(500);
             //MoveForwardDistance(300, 0.3);
             //ducksSleepMilliSec(200);
@@ -201,7 +201,7 @@ public class DucksAutonomousRight extends OpMode {
 
         } else if (state == 9) {
             //MoveRotateDegrees(90, 0.2);
-            MoveForwardDistance(-850, 0.6);
+            MoveForwardDistance(-1300, 0.6);
             ducksSleepMilliSec(500);
             //MoveForwardDistance(950, 0.5);
             //ducksSleepMilliSec(1000);
